@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javafx.scene.AccessibleAttribute;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JTextField;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingUtilities;
 
@@ -101,7 +102,7 @@ public class NewJFrame extends javax.swing.JFrame {
         try {
             jButton1.setEnabled(false);
             //從 combobox 抓出被選到的項目，存到變數裡
-            String selectedItem="";
+            String selectedItem=(String)jComboBox1.getSelectedItem();
             /////////////////////////////////////
             URL url = new URL(selectedItem);
             String fileName = url.getFile();
@@ -114,10 +115,16 @@ public class NewJFrame extends javax.swing.JFrame {
                 @Override
                 public void totalBytesDownloaded(long bytes, boolean finished, boolean failed) {
                     //implement this
+                    
+                    DefaultListModel model=new DefaultListModel();
+                    jList1.setModel(model);
+                    
+                    
                     if (finished) {
                         progress.setVisible(false);
                         jButton1.setEnabled(true);
                         //將下載好的項目加入到 jList 裡面
+                        model.addElement(selectedItem);
                         
                         ////////////////////////////
                         SwingUtilities.invokeLater(new Runnable() {
@@ -127,7 +134,7 @@ public class NewJFrame extends javax.swing.JFrame {
                                     URL fileURL=tempFile.toURI().toURL();
                                     //利用 fileURL 將 image icon 加到 jLabel2
                                     ////////////////////////////////////////
-                                    jList1.updateUI();
+                                    
                                 } catch (Exception ex) {
                                     Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
                                 }
